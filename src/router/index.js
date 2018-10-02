@@ -1,65 +1,47 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Home from '@/pages/Home'
+import Cliente from '@/pages/Cliente'
+import Atendimento from '@/pages/Atendimento'
+import Contato from '@/pages/Contato'
+import Acessorio from '@/pages/Acessorio'
+import Usuario from '@/pages/Usuario'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [{
+export default new Router ({
+  routes: [
+    {
       path: '/',
       name: 'Home',
-      component: () =>
-        import(
-          `@/pages/Home.vue`
-        )
+      component: Home
     },
     {
       path: '/cliente',
       name: 'Cliente',
-      component: () =>
-        import(
-          `@/pages/Cliente.vue`
-        )
+      component: Cliente
     },
     {
       path: '/atendimento',
       name: 'Atendimento',
-      component: () =>
-        import(
-          `@/pages/Atendimento.vue`
-        )
-    },
-    {
-      path: '/acessorio',
-      name: 'Acessorio',
-      component: () =>
-        import(
-          `@/pages/Acessorio.vue`
-        )
+      component: Atendimento
     },
     {
       path: '/contato',
       name: 'Contato',
-      component: () =>
-        import(
-          `@/pages/Contato.vue`
-        )
+      component: Contato
     },
     {
-      path: '/perfil',
-      name: 'Perfil',
-      component: () =>
-        import(
-          `@/pages/Perfil.vue`
-        )
+      path: '/acessorio',
+      name: 'Acessorio',
+      component: Acessorio
     },
-   
     {
       path: '/usuario',
-      name: 'Usuário',
-      component: () =>
-        import(
-          `@/pages/Usuario.vue`
-        )
-    }
+      name: 'Usuario',
+      component: Usuario
+    },
+    
+
   ]
 })

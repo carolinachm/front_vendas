@@ -29,7 +29,7 @@
                <v-flex xs6>
         <v-flex xs12 sm6 d-flex>
         <v-select
-          :items="items"
+          :items="status"
           label="Status"
         ></v-select>
       </v-flex>
@@ -85,7 +85,7 @@
       records: 0,
       acessorios: [],
       acessorio: {},
-     items: ['Ativo', 'Inativo'],
+     status: ['Ativo', 'Inativo'],
       headers: [{
           text: 'Descricao',
           align: "center",
