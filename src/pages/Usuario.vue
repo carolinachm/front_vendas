@@ -30,7 +30,13 @@
                   <v-text-field v-model="usuario.vendedor" label="Vendedor"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="usuario.status" label="Status"></v-text-field>
+                  <v-select
+  :items="status"
+  name="status"
+  label="Selecione o status"
+  v-model="status"
+  v-validate="'required'"
+  ></v-select>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -51,6 +57,7 @@
         <td class="text-xs-center">{{ props.item.vendedor }}</td>
         <td class="text-xs-center">{{ props.item.status }}</td>
         <td class="justify-center layout px-0">
+           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>
@@ -83,6 +90,7 @@
       records: 0,
       usuarios: [],
       usuario: {},
+      status:['ativo', 'inativo'],
       headers: [{
           text: 'Login',
           align: "center",

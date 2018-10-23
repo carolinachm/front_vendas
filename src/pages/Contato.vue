@@ -48,13 +48,13 @@
       </v-menu>
     </v-flex>
 
-          <v-flex xs12 >
+    <v-flex xs12 >
        <v-select
   :items="clientes"
   name="cliente"
   label="Selecione o cliente"
-  v-model="cliente"
-  v-validate="'required'"
+  v-model="contato.cliente"
+ @change="teste"
   item-text="nome"
   ></v-select>
       </v-flex>
@@ -64,8 +64,7 @@
   :items="atendimentos"
   name="atendimento"
   label="Selecione o atendimento"
-  v-model="atendimento"
-  v-validate="'required'"
+  v-model="contato.atendimento"
   item-text="nome"
   ></v-select>
       </v-flex>
@@ -89,6 +88,7 @@
         <td class="text-xs-center">{{ props.item.cliente}}</td>
         <td class="text-xs-center">{{ props.item.atendimento}}</td>
         <td class="justify-center layout px-0">
+           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>
@@ -180,6 +180,7 @@ import ClienteService from '../service/ClienteService';
 
       async initialize() {
         this.contatos = await ContatoService.getAll();
+        console.log(this.contatos);
         this.atendimentos = await AtendimentoService.getAll();
         this.clientes = await ClienteService.getAll();
         this.contato = {};
@@ -214,6 +215,9 @@ import ClienteService from '../service/ClienteService';
 
       async clear(){
           this.contato = {};
+      },
+      teste(){
+        console.log(this.contato.cliente)
       }
     }
   }

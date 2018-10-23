@@ -6,6 +6,7 @@ import Atendimento from '@/pages/Atendimento'
 import Contato from '@/pages/Contato'
 import Acessorio from '@/pages/Acessorio'
 import Usuario from '@/pages/Usuario'
+import Perfil from '@/pages/Perfil'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router ({
       path: '/usuario',
       name: 'Usuario',
       component: Usuario
+    },
+    {
+      path: '/perfil',
+      name: 'Perfil',
+      component: Perfil
     },
     
 

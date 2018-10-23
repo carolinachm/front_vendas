@@ -66,6 +66,7 @@
         <td class="text-xs-center">{{ props.item.email }}</td>
         <td class="text-xs-center">{{ props.item.telefone }}</td>
         <td class="justify-center layout px-0">
+           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>

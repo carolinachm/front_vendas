@@ -25,7 +25,7 @@
   :items="usuarios"
   name="usuario"
   label="Selecione o usuario"
-  v-model="usuario"
+  v-model="usuario.usuario"
   v-validate="'required'"
   item-text="login"
   ></v-select>
@@ -125,12 +125,13 @@
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.item.dataAbertura }}</td>
         <td class="text-xs-center">{{ props.item.dataEncerramento }}</td>
-        <td class="text-xs-center">{{ props.item.usuario }}</td>
+        <td class="text-xs-center">{{ props.item.usuario}}</td>
         <td class="text-xs-center">{{ props.item.nome }}</td>
          <td class="text-xs-center">{{ props.item.telefone }}</td>
           <td class="text-xs-center">{{ props.item.email }}</td>
            <td class="text-xs-center">{{ props.item.status }}</td>
         <td class="justify-center layout px-0">
+           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>
