@@ -26,8 +26,7 @@
   name="usuario"
   label="Selecione o usuario"
   v-model="usuario.usuario"
-  v-validate="'required'"
-  item-text="login"
+  item-value="login"
   ></v-select>
       </v-flex>
                 <v-flex xs12 sm6 md4>
@@ -168,7 +167,7 @@
       atendimento: {},
       usuarios:[],
       usuario:{},
-     items: ['Ativo', 'Inativo'],
+     items: ['Ativo', 'Inativo', 'usuarios'],
      date: null,
       menu: false,
       modal: false,
@@ -258,10 +257,10 @@
       async save() {
         if (this.atendimento._id) {
           await AtendimentoService.update(this.atendimento);
-          this.initialize();
+          
         } else {
           await AtendimentoService.save(this.atendimento);
-          this.initialize();
+          
         }
         this.initialize();
         this.clear();

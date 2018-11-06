@@ -25,10 +25,9 @@
   :items="clientes"
   name="cliente"
   label="Selecione o cliente"
-  v-model="cliente"
-  v-validate="'required'"
+  v-model="perfil.cliente"
   item-text="nome"
-  item-value="nome"
+ 
   >
   </v-select>
              </v-flex>
@@ -37,16 +36,16 @@
   :items="atendimentos"
   name="atendimento"
   label="Selecione o atendimento"
-  v-model="atendimento"
-  v-validate="'required'"
+  v-model="perfil.atendimento"
   item-text="nome"
-  item-value="nome"
+ 
   ></v-select>
              </v-flex>
              <v-flex xs12>
   <v-select
     :items="acessorios"
-    v-model="acessorios"
+    name= "acessorio"
+    v-model="perfil.acessorio"
     label="Selecione os acessorios"
     multiple
     item-text="descricao"
@@ -84,47 +83,14 @@
     <v-data-table :headers="headers" :items="perfis" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
        
-        <td class="text-xs-center">{{ props.item.nome}}</td>
-       
+        <td class="text-xs-center">{{ props.item.cliente}}</td>
+         <td class="text-xs-center">{{ props.item.atendimento}}</td>
+        <td class="text-xs-center">{{ props.item.acessorios}}</td>
         <td class="justify-center layout px-0">
-           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>
 
-          <v-dialog v-model="showDetails" width="600">
-          <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>
-              Detalhes do Perfil
-            </v-card-title>
-
-            <div>
-              <v-card-text>
-                <span>Razão Social: {{ legalDetails.socialName }}</span><br>
-                <span>Nome Fantasia: {{ legalDetails.fantasyName }}</span><br>
-                <span>Logradouro: {{ legalDetails.address }}</span><br>
-                <span>Número: {{ legalDetails.number }}</span><br>
-                <span>Complemento: {{ legalDetails.complement }}</span><br>
-                <span>Cep: {{ legalDetails.cep }}</span><br>
-                <span>Bairro: {{ legalDetails.district }}</span><br>
-                <span>Cidade: {{ legalDetails.city }}</span><br>
-                <span>Estado: {{ legalDetails.state }}</span><br>
-                <span>E-mail: {{ legalDetails.email }}</span><br>
-                <span>Telefone: {{ legalDetails.phone }}</span><br>
-                <span>Cnpj: {{ legalDetails.cnpj }}</span><br>
-              </v-card-text>
-            </div>
-           
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" flat @click="showDetails = false">
-                fechar
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
 
       </template>
 
@@ -164,6 +130,7 @@ export default {
     atendimento: {},
     acessorios: [],
     acessorio:{},
+     items:['clientes', 'atendimentos', 'acessorios'],
      showDetails: false,
 
     headers: [
@@ -180,7 +147,7 @@ export default {
       {
         text: "Acessorios",
         align: "center",
-        value: "acessorios"
+        value: "acessorio"
       },
       { text: "Ações", value: "id", sortable: false },
       {}
@@ -246,10 +213,10 @@ export default {
     async save() {
       if (this.perfil._id) {
         await PerfilService.update(this.perfil);
-        this.initialize();
+      
       } else {
         await PerfilService.save(this.perfil);
-        this.initialize();
+      
       }
       this.initialize();
       this.clear();

@@ -11,7 +11,7 @@ export default class ContatoService {
   static async getAll() {
     try {
       let contatos = await Axios.get(url + "contatos");
-      console.log(contatos.data)
+      console.log(contatos)
       return contatos.data;
     } catch (error) {
       throw error;

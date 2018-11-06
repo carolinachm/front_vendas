@@ -11,6 +11,7 @@ export default class PerfilService {
   static async getAll() {
     try {
       let perfis = await Axios.get(url + "perfis");
+      console.log(perfis.data)
       return perfis.data;
     } catch (error) {
       throw error;
@@ -20,6 +21,7 @@ export default class PerfilService {
   static async save(perfil) {
     try {
       let perfilSaved = await Axios.post(url + "perfis", perfil);
+      console.log(perfilSaved.data)
       return perfilSaved.data;
     } catch (error) {
       throw error;

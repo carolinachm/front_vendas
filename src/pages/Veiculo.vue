@@ -21,35 +21,32 @@
             <v-container grid-list-xl>
               <v-layout wrap row>
                 <v-flex xs12>
-                  <v-text-field v-model="contato.dataContato" label="Data contato"></v-text-field>
+                  <v-text-field v-model="cliente.nome" label="Nome"></v-text-field>
                 </v-flex>
                 <v-flex xs12>
-                  <v-text-field v-model="contato.cliente" label="Cliente"></v-text-field>
+                  <v-text-field v-model="cliente.cpf" label="CPF"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="cliente.email" label="E-mail"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="cliente.endereco" label="Endereço"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="cliente.numero" label="Numero"></v-text-field>
                 </v-flex>
                  <v-flex xs12>
-                  <v-text-field v-model="contato.atendimento" label="Atendimento"></v-text-field>
+                  <v-text-field v-model="cliente.complemento" label="Complemento"></v-text-field>
                 </v-flex>
-               <v-flex xs6>
-        <v-flex xs12 sm6 >
-       <v-select
-  :items="clientes"
-  name="cliente"
-  label="Selecione o cliente"
-  v-model="contato.cliente"
-  item-text="nome"
-  ></v-select>
-      </v-flex>
-      <v-flex xs12 sm6 >
-       <v-select
-  :items="atendimentos"
-  name="atendimento"
-  label="Selecione o atendimento"
-  v-model="contato.atendimento"
-  item-text="nome"
-  ></v-select>
-  
-      </v-flex>
-      </v-flex>
+                 <v-flex xs12>
+                  <v-text-field v-model="cliente.bairro" label="Bairro"></v-text-field>
+                </v-flex>
+                 <v-flex xs12>
+                  <v-text-field v-model="cliente.cep" label="Cep"></v-text-field>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -63,12 +60,13 @@
       </v-dialog>
     </v-toolbar>
 
-    <v-data-table :headers="headers" :items="contatos" hide-actions class="elevation-1">
+    <v-data-table :headers="headers" :items="clientes" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.item.dataContato }}</td>
-        <td class="text-xs-center">{{ props.item.cliente }}</td>
-        <td class="text-xs-center">{{ props.item.atendimento}}</td>
+        <td>{{ props.item.nome }}</td>
+        <td class="text-xs-center">{{ props.item.email }}</td>
+        <td class="text-xs-center">{{ props.item.telefone }}</td>
         <td class="justify-center layout px-0">
+           <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
         </td>
@@ -89,39 +87,32 @@
 </template>
 
 <script>
-  import ContatoService from '../service/ContatoService';
-import ClienteService from '../service/ClienteService';
-import AtendimentoService from '../service/AtendimentoService';
+  import ClienteService from '../service/ClienteService';
 
   export default {
     data: () => ({
-      title: "Listagem de contato",
+      title: "Listagem de Cliente",
       buttonTitle: "Novo",
       dialog: false,
       footerText: "Total de registros: ",
       emptyRecordsText: "Nenhum registro encontrado",
       records: 0,
-      contatos: [],
-      contato: {},
-      clientes:[],
-      cliente:{},
-      atendimentos:[],
-      atendimento:{},
-     items: ['clientes', 'atendimentos'],
+      clientes: [],
+      cliente: {},
       headers: [{
-          text: 'Descricao',
+          text: 'Nome',
           align: "center",
-          value: 'descricao'
+          value: 'name'
         },
         {
-          text: 'Cliente',
+          text: 'E-mail',
           align: "center",
-          value: 'cliente'
+          value: 'email'
         },
         {
-          text: 'Atendimento',
+          text: 'Telefone',
           align: "center",
-          value: 'atendimento'
+          value: 'telefone'
         },
         { text: 'Ações', value: 'id', sortable: false },
         {},
@@ -130,7 +121,7 @@ import AtendimentoService from '../service/AtendimentoService';
 
     computed: {
       formTitle() {
-        return this.contato._id ? 'Editar contato' : 'Novo contato'
+        return this.cliente._id ? 'Editar Cliente' : 'Novo Cliente'
       }
     },
 
@@ -147,45 +138,43 @@ import AtendimentoService from '../service/AtendimentoService';
     methods: {
       calculateRecords() {
         let amount = 0;
-        for (let i = 0; i < this.contatos.length; i++) {
+        for (let i = 0; i < this.clientes.length; i++) {
           amount++;
         }
         this.records = amount;
       },
 
       async initialize() {
-        this.contatos = await ContatoService.getAll();
         this.clientes = await ClienteService.getAll();
-        this.atendimentos = await AtendimentoService.getAll();
-        this.contato = {};
+        this.cliente = {};
         this.dialog = false;
         this.calculateRecords();
       },
 
       edit(p) {
-        this.contato = p;
+        this.cliente = p;
         this.dialog = true;
       },
 
-      async remove(contato) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await ContatoService.remove(acessorio);
+      async remove(cliente) {
+        if (confirm('Tem certeza que deseja excluir este registro ?')) await ClienteService.remove(cliente);
         this.initialize();
       },
 
       async save() {
-        if (this.contato._id) {
-          await ContatoService.update(this.contato);
-          
+        if (this.cliente._id) {
+          await ClienteService.update(this.cliente);
+          this.initialize();
         } else {
-          await ContatoService.save(this.contato);
-          
+          await ClienteService.save(this.cliente);
+          this.initialize();
         }
         this.initialize();
-        this.clear();
+        this.cliente = {};
       }, // save()
 
       async clear(){
-          this.contato = {};
+          this.cliente = {};
       }
     }
   }

@@ -20,33 +20,76 @@
           <v-card-text>
             <v-container grid-list-xl>
               <v-layout wrap row>
-                <v-flex xs12>
+                <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.nome" label="Nome"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
+                <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.cpf" label="CPF"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
-                </v-flex>
-                <v-flex xs12>
+                
+                <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.email" label="E-mail"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
+                <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.endereco" label="Endereço"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
+                <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.numero" label="Numero"></v-text-field>
                 </v-flex>
-                 <v-flex xs12>
+                 <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.complemento" label="Complemento"></v-text-field>
                 </v-flex>
-                 <v-flex xs12>
+                 <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.bairro" label="Bairro"></v-text-field>
                 </v-flex>
-                 <v-flex xs12>
+                 <v-flex xs12 sm6 >
                   <v-text-field v-model="cliente.cep" label="Cep"></v-text-field>
                 </v-flex>
+                <v-flex xs12 sm6 >
+                  <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
+                </v-flex>
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="marcas"
+  name="marca"
+  label="Selecione o marca"
+  v-model="cliente.marca"
+  item-text="descricao"
+  ></v-select>
+                 </v-flex>
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="tipoVeiculos"
+  name="tipoVeiculo"
+  label="Selecione o tipoveiculo"
+  v-model="cliente.tipoveiculo"
+  item-text="descricao"
+  ></v-select>
+                 </v-flex>
+                 <v-flex xs12>
+  <v-select
+    :items="acessorios"
+    name= "acessorio"
+    v-model="cliente.acessorio"
+    label="Selecione os acessorios"
+    multiple
+    item-text="descricao"
+  item-value="descricao"
+  >
+    <template
+      slot="selecione"
+      slot-scope="{ item, index }"
+    >
+      <v-chip v-if="index === 0">
+        <span>{{ item }}</span>
+      </v-chip>
+      <span
+        v-if="index === 1"
+        class="grey--text caption"
+      >(+{{ acessorios.length - 1 }} others)</span>
+    </template>
+  </v-select>
+             </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -87,99 +130,116 @@
 </template>
 
 <script>
-  import ClienteService from '../service/ClienteService';
+import ClienteService from "../service/ClienteService";
+import MarcaService from "../service/MarcaService";
+import AcessorioService from "../service/AcessorioService";
+import TipoVeiculoService from "../service/TipoVeiculoService";
+import NacionalidadeService from "../service/NacionalidadeService";
 
-  export default {
-    data: () => ({
-      title: "Listagem de Cliente",
-      buttonTitle: "Novo",
-      dialog: false,
-      footerText: "Total de registros: ",
-      emptyRecordsText: "Nenhum registro encontrado",
-      records: 0,
-      clientes: [],
-      cliente: {},
-      headers: [{
-          text: 'Nome',
-          align: "center",
-          value: 'name'
-        },
-        {
-          text: 'E-mail',
-          align: "center",
-          value: 'email'
-        },
-        {
-          text: 'Telefone',
-          align: "center",
-          value: 'telefone'
-        },
-        { text: 'Ações', value: 'id', sortable: false },
-        {},
-      ],
-    }),
+export default {
+  data: () => ({
+    title: "Listagem de Cliente",
+    buttonTitle: "Novo",
+    dialog: false,
+    footerText: "Total de registros: ",
+    emptyRecordsText: "Nenhum registro encontrado",
+    records: 0,
+    clientes: [],
+    cliente: {},
+    tipoVeiculos: [],
+    tipoVeiculo: {},
+    marcas: [],
+    marca: {},
+    nacionalidades: [],
+    nacionalidade: {},
+    acessorios: [],
+    acessorio: {},
+    
+    headers: [
+      {
+        text: "Nome",
+        align: "center",
+        value: "name"
+      },
+      {
+        text: "E-mail",
+        align: "center",
+        value: "email"
+      },
+      {
+        text: "Telefone",
+        align: "center",
+        value: "telefone"
+      },
+      { text: "Ações", value: "id", sortable: false },
+      {}
+    ]
+  }),
 
-    computed: {
-      formTitle() {
-        return this.cliente._id ? 'Editar Cliente' : 'Novo Cliente'
+  computed: {
+    formTitle() {
+      return this.cliente._id ? "Editar Cliente" : "Novo Cliente";
+    }
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.initialize();
+    }
+  },
+
+  created() {
+    this.initialize();
+  },
+
+  methods: {
+    calculateRecords() {
+      let amount = 0;
+      for (let i = 0; i < this.clientes.length; i++) {
+        amount++;
       }
+      this.records = amount;
     },
 
-    watch: {
-      dialog(val) {
-        val || this.initialize();
-      }
+    async initialize() {
+      this.clientes = await ClienteService.getAll();
+      this.marcas = await MarcaService.getAll();
+      this.nacionalidades = await NacionalidadeService.getAll();
+      this.tipoVeiculos = await TipoVeiculoService.getAll();
+      this.cliente = {};
+      this.dialog = false;
+      this.calculateRecords();
     },
 
-    created() {
+    edit(p) {
+      this.cliente = p;
+      this.dialog = true;
+    },
+
+    async remove(cliente) {
+      if (confirm("Tem certeza que deseja excluir este registro ?"))
+        await ClienteService.remove(cliente);
       this.initialize();
     },
 
-    methods: {
-      calculateRecords() {
-        let amount = 0;
-        for (let i = 0; i < this.clientes.length; i++) {
-          amount++;
-        }
-        this.records = amount;
-      },
-
-      async initialize() {
-        this.clientes = await ClienteService.getAll();
-        this.cliente = {};
-        this.dialog = false;
-        this.calculateRecords();
-      },
-
-      edit(p) {
-        this.cliente = p;
-        this.dialog = true;
-      },
-
-      async remove(cliente) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await ClienteService.remove(cliente);
-        this.initialize();
-      },
-
-      async save() {
-        if (this.cliente._id) {
-          await ClienteService.update(this.cliente);
-          this.initialize();
-        } else {
-          await ClienteService.save(this.cliente);
-          this.initialize();
-        }
-        this.initialize();
-      }, // save()
-
-      async clear(){
-          this.cliente = {};
+    async save() {
+      if (this.cliente._id) {
+        await ClienteService.update(this.cliente);
+        
+      } else {
+        await ClienteService.save(this.cliente);
+        
       }
+      this.initialize();
+      this.clear = {};
+    }, // save()
+
+    async clear() {
+      this.cliente = {};
     }
   }
-
+};
 </script>
 
 <style>
-
 </style>

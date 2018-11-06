@@ -21,35 +21,9 @@
             <v-container grid-list-xl>
               <v-layout wrap row>
                 <v-flex xs12>
-                  <v-text-field v-model="contato.dataContato" label="Data contato"></v-text-field>
+                  <v-text-field v-model="tipoVeiculo.descricao" label="Descrição"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="contato.cliente" label="Cliente"></v-text-field>
-                </v-flex>
-                 <v-flex xs12>
-                  <v-text-field v-model="contato.atendimento" label="Atendimento"></v-text-field>
-                </v-flex>
-               <v-flex xs6>
-        <v-flex xs12 sm6 >
-       <v-select
-  :items="clientes"
-  name="cliente"
-  label="Selecione o cliente"
-  v-model="contato.cliente"
-  item-text="nome"
-  ></v-select>
-      </v-flex>
-      <v-flex xs12 sm6 >
-       <v-select
-  :items="atendimentos"
-  name="atendimento"
-  label="Selecione o atendimento"
-  v-model="contato.atendimento"
-  item-text="nome"
-  ></v-select>
-  
-      </v-flex>
-      </v-flex>
+               
               </v-layout>
             </v-container>
           </v-card-text>
@@ -63,11 +37,9 @@
       </v-dialog>
     </v-toolbar>
 
-    <v-data-table :headers="headers" :items="contatos" hide-actions class="elevation-1">
+    <v-data-table :headers="headers" :items="tipoVeiculos" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.item.dataContato }}</td>
-        <td class="text-xs-center">{{ props.item.cliente }}</td>
-        <td class="text-xs-center">{{ props.item.atendimento}}</td>
+        <td class="text-xs-center">{{ props.item.descricao }}</td>
         <td class="justify-center layout px-0">
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
@@ -89,40 +61,24 @@
 </template>
 
 <script>
-  import ContatoService from '../service/ContatoService';
-import ClienteService from '../service/ClienteService';
-import AtendimentoService from '../service/AtendimentoService';
+  import TipoVeiculoService from '../service/TipoVeiculoService';
 
   export default {
     data: () => ({
-      title: "Listagem de contato",
+      title: "Listagem de tipoVeiculo",
       buttonTitle: "Novo",
       dialog: false,
       footerText: "Total de registros: ",
       emptyRecordsText: "Nenhum registro encontrado",
       records: 0,
-      contatos: [],
-      contato: {},
-      clientes:[],
-      cliente:{},
-      atendimentos:[],
-      atendimento:{},
-     items: ['clientes', 'atendimentos'],
+        tipoVeiculos: [],
+      tipoVeiculo: {},
       headers: [{
           text: 'Descricao',
           align: "center",
           value: 'descricao'
         },
-        {
-          text: 'Cliente',
-          align: "center",
-          value: 'cliente'
-        },
-        {
-          text: 'Atendimento',
-          align: "center",
-          value: 'atendimento'
-        },
+       
         { text: 'Ações', value: 'id', sortable: false },
         {},
       ],
@@ -130,7 +86,7 @@ import AtendimentoService from '../service/AtendimentoService';
 
     computed: {
       formTitle() {
-        return this.contato._id ? 'Editar contato' : 'Novo contato'
+        return this.tipoVeiculo._id ? 'Editar tipoVeiculo' : 'Novo tipoVeiculo'
       }
     },
 
@@ -147,45 +103,41 @@ import AtendimentoService from '../service/AtendimentoService';
     methods: {
       calculateRecords() {
         let amount = 0;
-        for (let i = 0; i < this.contatos.length; i++) {
+        for (let i = 0; i < this.tipoVeiculos.length; i++) {
           amount++;
         }
         this.records = amount;
       },
 
       async initialize() {
-        this.contatos = await ContatoService.getAll();
-        this.clientes = await ClienteService.getAll();
-        this.atendimentos = await AtendimentoService.getAll();
-        this.contato = {};
+        this.tipoVeiculos = await TipoVeiculoService.getAll();
+        this.tipoVeiculo = {};
         this.dialog = false;
         this.calculateRecords();
       },
 
       edit(p) {
-        this.contato = p;
+        this.tipoVeiculo = p;
         this.dialog = true;
       },
 
-      async remove(contato) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await ContatoService.remove(acessorio);
+      async remove(tipoVeiculo) {
+        if (confirm('Tem certeza que deseja excluir este registro ?')) await TipoVeiculoService.remove(tipoVeiculo);
         this.initialize();
       },
 
       async save() {
-        if (this.contato._id) {
-          await ContatoService.update(this.contato);
-          
+        if (this.tipoVeiculo._id) {
+          await TipoVeiculoService.update(this.tipoVeiculo);
         } else {
-          await ContatoService.save(this.contato);
-          
+          await TipoVeiculoService.save(this.tipoVeiculo);
         }
         this.initialize();
         this.clear();
       }, // save()
 
       async clear(){
-          this.contato = {};
+          this.tipoVeiculo = {};
       }
     }
   }

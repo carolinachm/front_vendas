@@ -72,32 +72,42 @@
           {
             icon: 'person',
             text: 'Cliente',
-            to: '/cliente'
+            to: '/clientes'
           },
           {
             icon: 'person',
             text: 'Atendimento',
-            to: '/atendimento'
+            to: '/atendimentos'
           },
           {
             icon: 'contacts',
             text: 'Contato',
-            to: '/contato'
+            to: '/contatos'
           },
           {
             icon: 'person',
             text: 'Acessorio',
-            to: '/acessorio'
+            to: '/acessorios'
           },
           {
             icon: 'group',
             text: 'Usuario',
-            to: '/usuario'
+            to: '/usuarios'
           },
           {
             icon: 'business',
             text: 'Perfil',
-            to: '/perfil'
+            to: '/perfis'
+          },
+          {
+            icon: 'business',
+            text: 'Marca',
+            to: '/marcas'
+          },
+          {
+            icon: 'business',
+            text: 'Tipo Veiculo',
+            to: '/tipoVeiculos'
           },
           // {
           //   icon: 'keyboard_arrow_up',
