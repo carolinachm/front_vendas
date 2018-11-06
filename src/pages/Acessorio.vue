@@ -23,9 +23,6 @@
                 <v-flex xs12>
                   <v-text-field v-model="acessorio.descricao" label="Descrição"></v-text-field>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="acessorio.valor" label="Valor"></v-text-field>
-                </v-flex>
                <v-flex xs6>
         <v-flex xs12 sm6 d-flex>
         <v-select

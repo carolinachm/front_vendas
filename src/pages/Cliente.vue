@@ -66,6 +66,15 @@
   item-text="descricao"
   ></v-select>
                  </v-flex>
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="nacionalidades"
+  name="nacionalidade"
+  label="Selecione a nacionalidade"
+  v-model="cliente.nacionalidade"
+  item-text="descricao"
+  ></v-select>
+                 </v-flex>
                  <v-flex xs12>
   <v-select
     :items="acessorios"

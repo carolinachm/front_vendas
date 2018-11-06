@@ -1,3 +1,3 @@
 export default {
-    apiHost: 'http://localhost:8080/'
+    apiHost: 'http://api-atendimento.herokuapp.com/'
   }
