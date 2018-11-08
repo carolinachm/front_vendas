@@ -91,9 +91,9 @@
       atendimento: {},
       items: ['clientes', 'atendimentos'],
       headers: [{
-          text: 'Descricao',
+          text: 'Data Contato',
           align: "center",
-          value: 'descricao'
+          value: 'dataContato'
         },
         {
           text: 'Cliente',
@@ -154,7 +154,7 @@
       },
   
       async remove(contato) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await ContatoService.remove(acessorio);
+        if (confirm('Tem certeza que deseja excluir este registro ?')) await ContatoService.remove(contato);
         this.initialize();
       },
   

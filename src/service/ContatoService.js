@@ -21,6 +21,7 @@ export default class ContatoService {
   static async save(contato) {
     try {
       let contatoSaved = await Axios.post(url + "contatos", contato);
+      console.log(contatoSaved)
       return contatoSaved.data;
     } catch (error) {
       throw error;
