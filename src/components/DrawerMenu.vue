@@ -91,7 +91,7 @@
           },
           {
             icon: 'group',
-            text: 'Usuario',
+            text: 'Usuário',
             to: '/usuarios'
           },
           {
@@ -108,6 +108,11 @@
             icon: 'business',
             text: 'Tipo Veiculo',
             to: '/tipoVeiculos'
+          },
+          {
+            icon: 'business',
+            text: 'Nacionalidade',
+            to: '/nacionalidades'
           },
           // {
           //   icon: 'keyboard_arrow_up',

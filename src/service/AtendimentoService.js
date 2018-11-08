@@ -11,6 +11,7 @@ export default class AtendimentoService {
   static async getAll() {
     try {
       let atendimentos = await Axios.get(url + "atendimentos");
+      //console.log(JSON.parse(atendimentos.data.usuario))
       return atendimentos.data;
     } catch (error) {
       throw error;

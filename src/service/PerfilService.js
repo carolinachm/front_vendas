@@ -11,7 +11,6 @@ export default class PerfilService {
   static async getAll() {
     try {
       let perfis = await Axios.get(url + "perfis");
-      console.log(perfis.data)
       return perfis.data;
     } catch (error) {
       throw error;

@@ -9,6 +9,7 @@ import Usuario from '@/pages/Usuario'
 import Perfil from '@/pages/Perfil'
 import Marca from '@/pages/Marca'
 import TipoVeiculo from '@/pages/TipoVeiculo'
+import Nacionalidade from '@/pages/Nacionalidade'
 
 
 Vue.use(Router)
@@ -59,6 +60,11 @@ export default new Router ({
       path: '/tipoVeiculos',
       name: 'TipoVeiculo',
       component: TipoVeiculo
+    },
+    {
+      path: '/nacionalidades',
+      name: 'Nacionalidade',
+      component: Nacionalidade
     },
 
   ]

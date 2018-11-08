@@ -27,6 +27,7 @@
   label="Selecione o cliente"
   v-model="perfil.cliente"
   item-text="nome"
+  
  
   >
   </v-select>
@@ -38,6 +39,7 @@
   label="Selecione o atendimento"
   v-model="perfil.atendimento"
   item-text="nome"
+  return-object
  
   ></v-select>
              </v-flex>
@@ -49,7 +51,7 @@
     label="Selecione os acessorios"
     multiple
     item-text="descricao"
-  item-value="descricao"
+  return-object
   >
     <template
       slot="selecione"
@@ -83,9 +85,9 @@
     <v-data-table :headers="headers" :items="perfis" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
        
-        <td class="text-xs-center">{{ props.item.cliente}}</td>
-         <td class="text-xs-center">{{ props.item.atendimento}}</td>
-        <td class="text-xs-center">{{ props.item.acessorios}}</td>
+        <td class="text-xs-center">{{ props.item.cliente.nome}}</td>
+         <td class="text-xs-center">{{ props.item.atendimento.nome}}</td>
+        <td class="text-xs-center">{{ props.item.acessorios.descricao}}</td>
         <td class="justify-center layout px-0">
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
@@ -122,7 +124,9 @@ export default {
     footerText: "Total de registros: ",
     emptyRecordsText: "Nenhum registro encontrado",
     records: 0,
-    perfis: [],
+    perfis: [{
+      cliente:{}, atendimento:{}, acessorio:{}
+    }],
     perfil: {},
     clientes: [],
     cliente:{},
@@ -180,10 +184,10 @@ export default {
     },
 
     async initialize() {
-      this.perfis = await PerfilService.getAll();
       this.clientes = await ClienteService.getAll();
       this.atendimentos = await AtendimentoService.getAll();
       this.acessorios = await AcessorioService.getAll();
+      this.perfis = await PerfilService.getAll();
       this.perfil = {};
       this.dialog = false;
       this.calculateRecords();

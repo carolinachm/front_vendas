@@ -23,10 +23,10 @@
                 <v-flex xs12 sm6 d-flex>
         <v-select
   :items="usuarios"
-  name="usuario"
-  label="Selecione o usuario"
-  v-model="usuario.usuario"
-  item-value="login"
+  label="Selecione a usuario"
+  v-model="atendimento.usuario"
+  item-text="login"
+  return-object
   ></v-select>
       </v-flex>
                 <v-flex xs12 sm6 md4>
@@ -120,11 +120,11 @@
       </v-dialog>
     </v-toolbar>
 
-    <v-data-table :headers="headers" :items="atendimentos" hide-actions class="elevation-1">
+    <v-data-table :headers="headers" :items="atendimentos"  hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.item.dataAbertura }}</td>
         <td class="text-xs-center">{{ props.item.dataEncerramento }}</td>
-        <td class="text-xs-center">{{ props.item.usuario}}</td>
+        <td class="text-xs-center">{{ props.item.usuario.login}}</td>
         <td class="text-xs-center">{{ props.item.nome }}</td>
          <td class="text-xs-center">{{ props.item.telefone }}</td>
           <td class="text-xs-center">{{ props.item.email }}</td>
@@ -163,11 +163,15 @@
       footerText: "Total de registros: ",
       emptyRecordsText: "Nenhum registro encontrado",
       records: 0,
-      atendimentos: [],
+      atendimentos: [{
+        usuario:{
+        }
+      }],
       atendimento: {},
       usuarios:[],
-      usuario:{},
-     items: ['Ativo', 'Inativo', 'usuarios'],
+      usuario:{
+      },
+     items: ['Ativo', 'Inativo'],
      date: null,
       menu: false,
       modal: false,
@@ -237,8 +241,9 @@
       },
 
       async initialize() {
-        this.atendimentos = await AtendimentoService.getAll();
         this.usuarios = await UsuarioService.getAll();
+        console.log(this.usuarios)
+        this.atendimentos = await AtendimentoService.getAll();
         this.atendimento = {};
         this.dialog = false;
         this.calculateRecords();

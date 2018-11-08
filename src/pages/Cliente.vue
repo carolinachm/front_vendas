@@ -51,39 +51,38 @@
                  <v-flex xs12 sm6 >
        <v-select
   :items="marcas"
-  name="marca"
   label="Selecione o marca"
   v-model="cliente.marca"
   item-text="descricao"
+  return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
   :items="tipoVeiculos"
-  name="tipoVeiculo"
   label="Selecione o tipoveiculo"
   v-model="cliente.tipoveiculo"
   item-text="descricao"
+  return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
   :items="nacionalidades"
-  name="nacionalidade"
   label="Selecione a nacionalidade"
   v-model="cliente.nacionalidade"
   item-text="descricao"
+  return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12>
   <v-select
     :items="acessorios"
-    name= "acessorio"
     v-model="cliente.acessorio"
     label="Selecione os acessorios"
     multiple
     item-text="descricao"
-  item-value="descricao"
+  return-object
   >
     <template
       slot="selecione"
@@ -153,16 +152,26 @@ export default {
     footerText: "Total de registros: ",
     emptyRecordsText: "Nenhum registro encontrado",
     records: 0,
-    clientes: [],
+    clientes: [{
+      marca:{}, tipoveiculo:{}, nacionalidade:{}, acessorio:{}
+    }],
     cliente: {},
     tipoVeiculos: [],
-    tipoVeiculo: {},
+    tipoVeiculo: {
+      
+    },
     marcas: [],
-    marca: {},
+    marca: {
+       
+    },
     nacionalidades: [],
-    nacionalidade: {},
+    nacionalidade: {
+       
+    },
     acessorios: [],
-    acessorio: {},
+    acessorio: {
+       
+    },
     
     headers: [
       {
@@ -211,10 +220,11 @@ export default {
     },
 
     async initialize() {
-      this.clientes = await ClienteService.getAll();
+      
       this.marcas = await MarcaService.getAll();
       this.nacionalidades = await NacionalidadeService.getAll();
       this.tipoVeiculos = await TipoVeiculoService.getAll();
+      this.clientes = await ClienteService.getAll();
       this.cliente = {};
       this.dialog = false;
       this.calculateRecords();

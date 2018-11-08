@@ -21,16 +21,9 @@
             <v-container grid-list-xl>
               <v-layout wrap row>
                 <v-flex xs12>
-                  <v-text-field v-model="acessorio.descricao" label="Descrição"></v-text-field>
+                  <v-text-field v-model="nacionalidade.descricao" label="Descrição"></v-text-field>
                 </v-flex>
-               <v-flex xs6>
-        <v-flex xs12 sm6 d-flex>
-        <v-select
-          :items="status"
-          label="Status"
-        ></v-select>
-      </v-flex>
-      </v-flex>
+               
               </v-layout>
             </v-container>
           </v-card-text>
@@ -44,10 +37,9 @@
       </v-dialog>
     </v-toolbar>
 
-    <v-data-table :headers="headers" :items="acessorios" hide-actions class="elevation-1">
+    <v-data-table :headers="headers" :items="nacionalidades" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
         <td class="text-xs-center">{{ props.item.descricao }}</td>
-        <td class="text-xs-center">{{ props.item.status }}</td>
         <td class="justify-center layout px-0">
           <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
           <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
@@ -69,29 +61,24 @@
 </template>
 
 <script>
-  import AcessorioService from '../service/AcessorioService';
+  import NacionalidadeService from '../service/NacionalidadeService';
 
   export default {
     data: () => ({
-      title: "Listagem de acessorio",
+      title: "Listagem de nacionalidade",
       buttonTitle: "Novo",
       dialog: false,
       footerText: "Total de registros: ",
       emptyRecordsText: "Nenhum registro encontrado",
       records: 0,
-      acessorios: [],
-      acessorio: {},
-     status: ['Ativo', 'Inativo'],
+        nacionalidades: [],
+      nacionalidade: {},
       headers: [{
           text: 'Descricao',
           align: "center",
           value: 'descricao'
         },
-        {
-          text: 'Status',
-          align: "center",
-          value: 'status'
-        },
+       
         { text: 'Ações', value: 'id', sortable: false },
         {},
       ],
@@ -99,7 +86,7 @@
 
     computed: {
       formTitle() {
-        return this.acessorio._id ? 'Editar acessorio' : 'Novo acessorio'
+        return this.nacionalidade._id ? 'Editar nacionalidade' : 'Novo nacionalidade'
       }
     },
 
@@ -116,43 +103,41 @@
     methods: {
       calculateRecords() {
         let amount = 0;
-        for (let i = 0; i < this.acessorios.length; i++) {
+        for (let i = 0; i < this.nacionalidades.length; i++) {
           amount++;
         }
         this.records = amount;
       },
 
       async initialize() {
-        this.acessorios = await AcessorioService.getAll();
-        this.acessorio = {};
+        this.nacionalidades = await NacionalidadeService.getAll();
+        this.nacionalidade = {};
         this.dialog = false;
         this.calculateRecords();
       },
 
       edit(p) {
-        this.acessorio = p;
+        this.nacionalidade = p;
         this.dialog = true;
       },
 
-      async remove(acessorio) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await AcessorioService.remove(acessorio);
+      async remove(nacionalidade) {
+        if (confirm('Tem certeza que deseja excluir este registro ?')) await NacionalidadeService.remove(nacionalidade);
         this.initialize();
       },
 
       async save() {
-        if (this.acessorio._id) {
-          await AcessorioService.update(this.acessorio);
-          this.initialize();
+        if (this.nacionalidade._id) {
+          await NacionalidadeService.update(this.nacionalidade);
         } else {
-          await AcessorioService.save(this.acessorio);
-          this.initialize();
+          await NacionalidadeService.save(this.nacionalidade);
         }
         this.initialize();
         this.clear();
       }, // save()
 
       async clear(){
-          this.acessorio = {};
+          this.nacionalidade = {};
       }
     }
   }
