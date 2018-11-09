@@ -40,7 +40,7 @@
     },
 
     data: () => ({
-      companyName: "Gestor de Atendimento",
+      companyName: "SISPAM - VIP CAR",
        drawer: true,
       
     }),

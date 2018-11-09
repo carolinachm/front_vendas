@@ -10,6 +10,7 @@ import Perfil from '@/pages/Perfil'
 import Marca from '@/pages/Marca'
 import TipoVeiculo from '@/pages/TipoVeiculo'
 import Nacionalidade from '@/pages/Nacionalidade'
+import Relatorio from '@/pages/Relatorio'
 
 
 Vue.use(Router)
@@ -40,6 +41,11 @@ export default new Router ({
       path: '/acessorios',
       name: 'Acessorio',
       component: Acessorio
+    },
+    {
+      path: '/relatorios',
+      name: 'Relario',
+      component: Relatorio
     },
     {
       path: '/usuarios',

@@ -47,6 +47,7 @@
                 <v-flex xs12 sm6>
                   <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
                 </v-flex>
+<<<<<<< HEAD
                 <v-flex xs12 sm6>
                   <v-select :items="marcas" label="Selecione o marca" v-model="cliente.marca" item-text="descricao" return-object></v-select>
                 </v-flex>
@@ -69,6 +70,56 @@
               >(+{{ acessorios.length - 1 }} others)</span>
                
 </template>
+=======
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="marcas"
+  label="Selecione o marca"
+  v-model="cliente.marca"
+  item-text="descricao"
+  return-object
+  ></v-select>
+                 </v-flex>
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="tipoVeiculos"
+  label="Caracteristica Desejada 1"
+  v-model="cliente.tipoveiculo"
+  item-text="descricao"
+  return-object
+  ></v-select>
+                 </v-flex>
+                 <v-flex xs12 sm6 >
+       <v-select
+  :items="nacionalidades"
+  label="Caracteristica Desejada 2"
+  v-model="cliente.nacionalidade"
+  item-text="descricao"
+  return-object
+  ></v-select>
+                 </v-flex>
+                 <v-flex xs12>
+  <v-select
+    :items="acessorios"
+    v-model="cliente.acessorio"
+    label="Caracteristica Desejada 3"
+    multiple
+    item-text="descricao"
+  return-object
+  >
+    <template
+      slot="selecione"
+      slot-scope="{ item, index }"
+    >
+      <v-chip v-if="index === 0">
+        <span>{{ item }}</span>
+      </v-chip>
+      <span
+        v-if="index === 1"
+        class="grey--text caption"
+      >(+{{ acessorios.length - 1 }} others)</span>
+    </template>
+>>>>>>> a2f8303bc2a8c8d2cc03479874e4d9d4eca75ccc
   </v-select>
              </v-flex>
              <v-flex xs12 sm6>
