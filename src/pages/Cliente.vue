@@ -60,7 +60,7 @@
                  <v-flex xs12 sm6 >
        <v-select
   :items="tipoVeiculos"
-  label="Selecione o tipoveiculo"
+  label="Caracteristica Desejada 1"
   v-model="cliente.tipoveiculo"
   item-text="descricao"
   return-object
@@ -69,7 +69,7 @@
                  <v-flex xs12 sm6 >
        <v-select
   :items="nacionalidades"
-  label="Selecione a nacionalidade"
+  label="Caracteristica Desejada 2"
   v-model="cliente.nacionalidade"
   item-text="descricao"
   return-object
@@ -79,7 +79,7 @@
   <v-select
     :items="acessorios"
     v-model="cliente.acessorio"
-    label="Selecione os acessorios"
+    label="Caracteristica Desejada 3"
     multiple
     item-text="descricao"
   return-object

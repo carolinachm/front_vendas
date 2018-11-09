@@ -74,46 +74,51 @@
             text: 'Cliente',
             to: '/clientes'
           },
-          {
-            icon: 'person',
-            text: 'Atendimento',
-            to: '/atendimentos'
-          },
-          {
-            icon: 'contacts',
-            text: 'Contato',
-            to: '/contatos'
-          },
-          {
-            icon: 'person',
-            text: 'Acessorio',
-            to: '/acessorios'
-          },
-          {
-            icon: 'group',
-            text: 'Usuário',
-            to: '/usuarios'
-          },
+                    // {
+          //   icon: 'contacts',
+          //   text: 'Contato',
+          //   to: '/contatos'
+          // },
+          // {
+          //   icon: 'person',
+          //   text: 'Acessorio',
+          //   to: '/acessorios'
+          // },
+          // {
+          //   icon: 'group',
+          //   text: 'Usuário',
+          //   to: '/usuarios'
+          // },
           {
             icon: 'business',
             text: 'Perfil',
             to: '/perfis'
           },
           {
-            icon: 'business',
-            text: 'Marca',
-            to: '/marcas'
+            icon: 'person',
+            text: 'Atendimento',
+            to: '/atendimentos'
           },
           {
             icon: 'business',
-            text: 'Tipo Veiculo',
-            to: '/tipoVeiculos'
+            text: 'Relatorios',
+            to: '/relatorios'
           },
-          {
-            icon: 'business',
-            text: 'Nacionalidade',
-            to: '/nacionalidades'
-          },
+          // {
+          //   icon: 'business',
+          //   text: 'Marca',
+          //   to: '/marcas'
+          // },
+          // {
+          //   icon: 'business',
+          //   text: 'Tipo Veiculo',
+          //   to: '/tipoVeiculos'
+          // },
+          // {
+          //   icon: 'business',
+          //   text: 'Nacionalidade',
+          //   to: '/nacionalidades'
+          // },
           // {
           //   icon: 'keyboard_arrow_up',
           //   'icon-alt': 'keyboard_arrow_down',
