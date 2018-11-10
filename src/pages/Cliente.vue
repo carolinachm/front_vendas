@@ -47,30 +47,6 @@
                 <v-flex xs12 sm6>
                   <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
                 </v-flex>
-<<<<<<< HEAD
-                <v-flex xs12 sm6>
-                  <v-select :items="marcas" label="Selecione o marca" v-model="cliente.marca" item-text="descricao" return-object></v-select>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-select :items="tipoVeiculos" label="Selecione o tipoveiculo" v-model="cliente.tipoveiculo" item-text="descricao" return-object></v-select>
-                </v-flex>
-                <v-flex xs12 sm6>
-                  <v-select :items="nacionalidades" label="Selecione a nacionalidade" v-model="cliente.nacionalidade" item-text="descricao" return-object></v-select>
-                </v-flex>
-                
-                <v-flex xs12>
-                  <v-select :items="acessorios" v-model="cliente.acessorio" label="Selecione os acessorios" multiple item-text="descricao" return-object>
-                    <template slot="selecione" slot-scope="{ item, index }">
-              <v-chip v-if="index === 0">
-                <span>{{ item }}</span>
-              </v-chip>
-              <span
-                v-if="index === 1"
-                class="grey--text caption"
-              >(+{{ acessorios.length - 1 }} others)</span>
-               
-</template>
-=======
                  <v-flex xs12 sm6 >
        <v-select
   :items="marcas"
@@ -82,29 +58,26 @@
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
-  :items="tipoVeiculos"
+  :items="produtos"
   label="Caracteristica Desejada 1"
-  v-model="cliente.tipoveiculo"
-  item-text="descricao"
+  v-model="cliente.produto"
   return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
-  :items="nacionalidades"
+  :items="produtos"
   label="Caracteristica Desejada 2"
-  v-model="cliente.nacionalidade"
-  item-text="descricao"
+  v-model="cliente.produto"
   return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12>
   <v-select
-    :items="acessorios"
-    v-model="cliente.acessorio"
+    :items="produtos"
+    v-model="cliente.produtos"
     label="Caracteristica Desejada 3"
     multiple
-    item-text="descricao"
   return-object
   >
     <template
@@ -117,9 +90,8 @@
       <span
         v-if="index === 1"
         class="grey--text caption"
-      >(+{{ acessorios.length - 1 }} others)</span>
+      >(+{{ produtos.length - 1 }} others)</span>
     </template>
->>>>>>> a2f8303bc2a8c8d2cc03479874e4d9d4eca75ccc
   </v-select>
              </v-flex>
              <v-flex xs12 sm6>
@@ -170,9 +142,7 @@
 <script>
   import ClienteService from "../service/ClienteService";
   import MarcaService from "../service/MarcaService";
-  import AcessorioService from "../service/AcessorioService";
-  import TipoVeiculoService from "../service/TipoVeiculoService";
-  import NacionalidadeService from "../service/NacionalidadeService";
+  import ProdutoService from "../service/ProdutoService"
   
   export default {
     data: () => ({
@@ -186,9 +156,7 @@
       records: 0,
       clientes: [{
         marca: {},
-        tipoveiculo: {},
-        nacionalidade: {},
-        acessorio: {}
+        produto:{}
       }],
       cliente: {},
       tipoVeiculos: [],
@@ -199,15 +167,8 @@
       marca: {
   
       },
-      nacionalidades: [],
-      nacionalidade: {
-  
-      },
-      acessorios: [],
-      acessorio: {
-  
-      },
-  
+     produtos:[],
+     produto:{},
       headers: [{
           text: "Nome",
           align: "center",
@@ -263,10 +224,8 @@
       },
   
       async initialize() {
-  
         this.marcas = await MarcaService.getAll();
-        this.nacionalidades = await NacionalidadeService.getAll();
-        this.tipoVeiculos = await TipoVeiculoService.getAll();
+        this.produtos = await ProdutoService.getAll();
         this.clientes = await ClienteService.getAll();
         this.dialogRemove = false;
         this.cliente = {};

@@ -16,6 +16,13 @@ export default class PerfilService {
       throw error;
     }
   } // getAll()
+  static async findByCPF(perfil){
+    try {
+      await Axios.get(url  + "perfis" , perfil)
+    } catch (error) {
+      throw error;
+    }
+  }
 
   static async save(perfil) {
     try {
