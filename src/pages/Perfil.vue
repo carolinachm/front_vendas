@@ -40,12 +40,14 @@
                 <v-text-field v-model="cliente.nome" label="Nome" disabled></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
-                <v-text-field v-model="produto" label="Vendedor" disabled></v-text-field>
+                <v-text-field v-model="cliente.produto" label="NomeVendedor" disabled></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
-                <v-text-field v-model="produto" label="Codigo" disabled></v-text-field>
+                <v-text-field v-model="cliente.produto" label="Codigo" disabled></v-text-field>
               </v-flex>
-              
+              <v-flex xs12 sm6>
+                <v-text-field v-model="cliente.produto" label="Imagem" disabled></v-text-field>
+              </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
@@ -78,11 +80,10 @@
       }],
       perfil: {
         cliente: {},
-        produto:[{
-          vendedor:{
-            nomeVendedor:""
-          }
-        }]
+        produto:{
+          vendedor:{}
+        },
+        
 
       },
       clientes: [],
@@ -150,13 +151,10 @@
         this.dialog = true;
       },
       async findByCPF() {
-        
         this.cliente = this.perfil.cliente;
-        this.produto = this.perfil.produto;
         this.dialog = false;
         this.dialogPerfilCliente = true;
         console.log(this.cliente)
-        console.log(this.produto);
       },
       closeDialogPerfilCliente() {
         this.dialogPerfilCliente = false;
