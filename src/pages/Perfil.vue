@@ -43,14 +43,40 @@
                 <v-text-field v-model="produto" label="Vendedor" disabled></v-text-field>
               </v-flex>
               <v-flex xs12 sm6>
-                <v-text-field v-model="produto" label="Codigo" disabled></v-text-field>
+                <v-text-field v-model="produto" label="ID Produto" disabled></v-text-field>
               </v-flex>
+              <!--
+              <div>
+              <h1>{{title}}</h1>
+              <img src="/static/img/palio.jpg">
+              </div>
+              -->
+              <!--
+              <div>
+              <h1>Produto Ideal</h1>
+              <img src="/static/img/palio.jpg">
+              </div>
+              -->
+              <!--
+              </div> 
+              <h1>{{title}}</h1>
+              <img src="/static/img/meriva.jpg">
+              </div> 
+              -->
+              <!--
+              </div> 
+              <h1>{{title}}</h1>
+              <img src="/static/img/fiesta.jpg">
+              </div>              
+              -->
+              
               
             </v-layout>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native.stop.prevent="closeDialogPerfilCliente();">Gerar Atendimento</v-btn>
           <v-btn color="blue darken-1" flat @click.native.stop.prevent="closeDialogPerfilCliente();">Fechar</v-btn>
         </v-card-actions>
       </v-card>
@@ -60,7 +86,7 @@
 
 <script>
   import PerfilService from "../service/PerfilService";
-  import ProdutoService from "../service/ProdutoService";
+  import AcessorioService from "../service/AcessorioService";
   import ClienteService from "../service/ClienteService";
   
   export default {
@@ -129,7 +155,7 @@
         this.records = amount;
       },
       async initialize() {
-        this.produtos = await ProdutoService.getAll();
+        this.produtos = await AcessorioService.getAll();
         this.clientes = await ClienteService.getAll();
         this.perfis = await PerfilService.getAll();
         this.perfil = {};

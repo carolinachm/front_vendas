@@ -58,24 +58,24 @@
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
-  :items="produtos"
+  :items="nacionalidade"
   label="Caracteristica Desejada 1"
-  v-model="cliente.produto"
+  v-model="cliente.nacionalidade"
   return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
-  :items="produtos"
+  :items="acessorio"
   label="Caracteristica Desejada 2"
-  v-model="cliente.produto"
+  v-model="cliente.acessorio"
   return-object
   ></v-select>
                  </v-flex>
                  <v-flex xs12>
   <v-select
-    :items="produtos"
-    v-model="cliente.produtos"
+    :items="tipoVeiculo"
+    v-model="cliente.tipoVeiculo"
     label="Caracteristica Desejada 3"
     multiple
   return-object
@@ -142,7 +142,7 @@
 <script>
   import ClienteService from "../service/ClienteService";
   import MarcaService from "../service/MarcaService";
-  import ProdutoService from "../service/ProdutoService"
+  import AcessorioService from "../service/AcessorioService"
   
   export default {
     data: () => ({
@@ -225,7 +225,7 @@
   
       async initialize() {
         this.marcas = await MarcaService.getAll();
-        this.produtos = await ProdutoService.getAll();
+        this.produtos = await AcessorioService.getAll();
         this.clientes = await ClienteService.getAll();
         this.dialogRemove = false;
         this.cliente = {};
