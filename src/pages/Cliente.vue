@@ -58,42 +58,14 @@
                  </v-flex>
                  <v-flex xs12 sm6 >
        <v-select
-  :items="nacionalidade"
-  label="Caracteristica Desejada 1"
-  v-model="cliente.nacionalidade"
+  :items="produtos"
+  label="Selecione as caracteristicas desejadas"
+  v-model="cliente.produto"
+  item-text="marca potencia"
   return-object
   ></v-select>
                  </v-flex>
-                 <v-flex xs12 sm6 >
-       <v-select
-  :items="acessorio"
-  label="Caracteristica Desejada 2"
-  v-model="cliente.acessorio"
-  return-object
-  ></v-select>
-                 </v-flex>
-                 <v-flex xs12>
-  <v-select
-    :items="tipoVeiculo"
-    v-model="cliente.tipoVeiculo"
-    label="Caracteristica Desejada 3"
-    multiple
-  return-object
-  >
-    <template
-      slot="selecione"
-      slot-scope="{ item, index }"
-    >
-      <v-chip v-if="index === 0">
-        <span>{{ item }}</span>
-      </v-chip>
-      <span
-        v-if="index === 1"
-        class="grey--text caption"
-      >(+{{ produtos.length - 1 }} others)</span>
-    </template>
-  </v-select>
-             </v-flex>
+                 
              <v-flex xs12 sm6>
                   <v-text-field v-model="cliente.redeSocial" label="Rede Social"></v-text-field>
                 </v-flex>
@@ -141,8 +113,8 @@
 
 <script>
   import ClienteService from "../service/ClienteService";
+  import ProdutoService from "../service/ProdutoService";
   import MarcaService from "../service/MarcaService";
-  import AcessorioService from "../service/AcessorioService"
   
   export default {
     data: () => ({
@@ -156,7 +128,7 @@
       records: 0,
       clientes: [{
         marca: {},
-        produto:{}
+        produto:[]
       }],
       cliente: {},
       tipoVeiculos: [],
@@ -225,13 +197,16 @@
   
       async initialize() {
         this.marcas = await MarcaService.getAll();
-        this.produtos = await AcessorioService.getAll();
+        this.produtos = await ProdutoService.getAll();
+        console.log(this.produtos)
         this.clientes = await ClienteService.getAll();
+        console.log(this.clientes)
         this.dialogRemove = false;
         this.cliente = {};
         this.confirmedExclusion = false;
         this.dialog = false;
         this.calculateRecords();
+        
       },
   
       edit(p) {

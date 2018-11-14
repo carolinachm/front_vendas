@@ -149,7 +149,7 @@
   
           <v-spacer></v-spacer>
   
-          <v-btn color="blue darken-1" flat @click.native.stop.prevent="abrirDialogPerfilAgendamento();">Gerar Atendimento</v-btn>
+          <v-btn color="blue darken-1" flat @click.native.stop.prevent="gerarAgendamento();">Gerar Atendimento</v-btn>
   
           <v-btn color="blue darken-1" flat @click.native.stop.prevent="closeDialogPerfilCliente();">Fechar</v-btn>
   
@@ -159,7 +159,7 @@
   
     </v-dialog>
 
-    <!-- DIALOG DO AGENDAMENTO -->
+    <!-- DIALOG DO AGENDAMENTO    -->
   
     <v-dialog v-model="dialogPerfilAgendamento" max-width="700px">
        <v-card>
@@ -170,7 +170,7 @@
             <v-container grid-list-xl>
               <v-layout wrap row>
                 <v-flex xs12 sm6 d-flex>
-                  <v-select :items="usuarios" label="Selecione a usuario"  item-text="login" return-object></v-select>
+                  <v-select :items="usuarios" label="Selecione a usuario" v-model="atendimento.usuario" item-text="login" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" :return-value.sync="date" lazy transition="scale-transition" offset-y full-width min-width="290px">
@@ -182,20 +182,52 @@
                     </v-date-picker>
                   </v-menu>
                 </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" :return-value.sync="date" lazy transition="scale-transition" offset-y full-width min-width="290px">
+                    <v-text-field slot="activator" v-model="date" label="Picker in menu" prepend-icon="event" readonly></v-text-field>
+                    <v-date-picker v-model="date" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                      <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="atendimento.nome" label="Nome"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="atendimento.telefone" label="Telefone"></v-text-field>
+                </v-flex>
+                <v-flex xs12>
+                  <v-text-field v-model="atendimento.email" label="E-mail"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 d-flex>
+                  <v-select xs12 :items="items" label="Status"></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea solo name="input-7-4" label="Descrição" v-model="atendimento.descricao"></v-textarea>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
-       </v-card>
+  
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="initialize();">Cancelar</v-btn>
+            <v-btn color="blue darken-1" flat @click="save();">Salvar</v-btn>
+          </v-card-actions>
+        </v-card>
+  
        </v-dialog>
+    
     </div>
 </template>
 
 <script>
   import PerfilService from "../service/PerfilService";
-  
-  import AcessorioService from "../service/AcessorioService";
-  
+  import ProdutoService from "../service/ProdutoService"; 
   import ClienteService from "../service/ClienteService";
+  import AtendimentoService from "../service/AtendimentoService";
   
   
   
@@ -223,7 +255,8 @@
   
         cliente: {},
   
-        produto: {}
+        produto: {},
+        
   
       }],
   
@@ -233,13 +266,13 @@
   
         produto: [{
   
-          vendedor: {
+          vendedor: {},
+         
   
-            nomeVendedor: ""
-  
-          }
-  
-        }]
+        }],
+         atendimento: {
+           
+         }
   
   
   
@@ -252,12 +285,19 @@
       produtos: [],
   
       produto: {},
+      atendimentos: [{
+        usuario: {}
+      }],
+      atendimento:{},
   
   
-  
-      items: ['clientes', 'produtos'],
+      items: ['Ativo', 'Inativo'],
   
       showDetails: false,
+
+       date: null,
+      menu: false,
+      modal: false,
   
       headers: [{
   
@@ -332,8 +372,10 @@
       },
   
       async initialize() {
+
+        this.atendimentos = await AtendimentoService.getAll();
   
-        this.produtos = await AcessorioService.getAll();
+        this.produtos = await ProdutoService.getAll();
   
         this.clientes = await ClienteService.getAll();
   
@@ -389,6 +431,22 @@
   
         console.log(this.produto);
   
+      },
+      async gerarAgendamento() {
+        if (this.atendimento._id) {
+          await AtendimentoService.update(this.atendimento);
+  
+        } else {
+          await AtendimentoService.save(this.atendimento);
+  
+        }
+        this.initialize();
+        this.abrirDialogPerfilAgendamento();
+        this.clear = {};
+      }, // save()
+  
+      async clear() {
+        this.atendimento= {};
       },
   
       closeDialogPerfilCliente() {

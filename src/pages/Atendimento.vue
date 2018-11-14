@@ -8,8 +8,7 @@
   
       <v-dialog v-model="dialog" max-width="700px">
   
-        <v-btn slot="activator" color="primary" dark flat fab title="Inserir um novo registro"> {{ buttonTitle }}
-        </v-btn>
+       
   
         <v-card>
           <v-card-title>
@@ -80,9 +79,9 @@
             <td class="text-xs-center">{{ props.item.email }}</td>
              <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="justify-center layout px-0">
-             <v-icon small class="mr-2" @click="description(props.item)" title="Descrição">description</v-icon>
+            
             <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
-            <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
+           
           </td>
 </template>
 
