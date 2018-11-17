@@ -47,32 +47,20 @@
                 <v-flex xs12 sm6>
                   <v-text-field v-model="cliente.telefone" label="Telefone"></v-text-field>
                 </v-flex>
-                 <v-flex xs12 sm6 >
-       <v-select
-  :items="marcas"
-  label="Selecione o marca"
-  v-model="cliente.marca"
-  item-text="descricao"
-  return-object
-  ></v-select>
-                 </v-flex>
-                 <v-flex xs12 sm6 >
-       <v-select
-  :items="produtos"
-  label="Selecione as caracteristicas desejadas"
-  v-model="cliente.produto"
-  item-text="marca potencia"
-  return-object
-  ></v-select>
-                 </v-flex>
-                 
-             <v-flex xs12 sm6>
+                <v-flex xs12 sm6>
+                  <v-select :items="marcas" label="Selecione o marca" v-model="cliente.marca" item-text="descricao" return-object></v-select>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-select :items="produtos" label="Selecione as caracteristicas desejadas" v-model="cliente.produto" :item-text="itemTextTipo" return-object placeholder=""></v-select>
+                </v-flex>
+  
+                <v-flex xs12 sm6>
                   <v-text-field v-model="cliente.redeSocial" label="Rede Social"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
-
+  
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="initialize();">Cancelar</v-btn>
@@ -81,18 +69,18 @@
         </v-card>
       </v-dialog>
     </v-toolbar>
-
+  
     <v-data-table :headers="headers" :items="clientes" hide-actions class="elevation-1">
-<template slot="items" slot-scope="props">
-  <td>
-    {{ props.item.nome }}</td>
-  <td class="text-xs-center">{{ props.item.email }}</td>
-  <td class="text-xs-center">{{ props.item.telefone }}</td>
-   <td class="text-xs-center">{{ props.item.redeSocial }}</td>
-  <td class="justify-center layout px-0">
-    <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
-    <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
-  </td>
+      <template slot="items" slot-scope="props">
+    <td>
+      {{ props.item.nome }}</td>
+    <td class="text-xs-center">{{ props.item.email }}</td>
+    <td class="text-xs-center">{{ props.item.telefone }}</td>
+     <td class="text-xs-center">{{ props.item.redeSocial }}</td>
+    <td class="justify-center layout px-0">
+      <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
+      <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
+    </td>
 </template>
 
 <template slot="footer" v-if="records>
@@ -128,7 +116,7 @@
       records: 0,
       clientes: [{
         marca: {},
-        produto:[]
+        produto: {}
       }],
       cliente: {},
       tipoVeiculos: [],
@@ -139,8 +127,8 @@
       marca: {
   
       },
-     produtos:[],
-     produto:{},
+      produtos: ['marca','potencia'],
+      produto: {},
       headers: [{
           text: "Nome",
           align: "center",
@@ -187,6 +175,8 @@
     },
   
     methods: {
+      itemTextTipo: cliente => cliente.produto.marca + " - " + cliente.produto.marca,
+
       calculateRecords() {
         let amount = 0;
         for (let i = 0; i < this.clientes.length; i++) {
@@ -206,7 +196,7 @@
         this.confirmedExclusion = false;
         this.dialog = false;
         this.calculateRecords();
-        
+  
       },
   
       edit(p) {

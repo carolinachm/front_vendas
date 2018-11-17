@@ -11,6 +11,7 @@ export default class MarcaService {
   static async getAll() {
     try {
       let marcas = await Axios.get(url + "marcas");
+      //console.log(JSON.parse(marcas.data.usuario))
       return marcas.data;
     } catch (error) {
       throw error;

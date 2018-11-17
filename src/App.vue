@@ -7,15 +7,16 @@
       <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="grey lighten-1" dark app fixed>
         <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
           <v-toolbar-side-icon @click.stop="drawer = !drawer" ></v-toolbar-side-icon>
-          <span class="hidden-sm-and-down ">{{ companyName }}</span>
+          <span class="hidden-sm-and-down text-xs-center" >{{ companyName }}</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <v-btn icon large>
+        <!-- <v-btn icon large>
           <v-avatar size="32px" tile>
             <img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify">
           </v-avatar>
         </v-btn>
+         -->
       </v-toolbar>
 
       <v-content>

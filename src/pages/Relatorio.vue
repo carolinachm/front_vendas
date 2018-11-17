@@ -1,164 +1,214 @@
 <template>
-
-  <div>
-    <v-toolbar flat>
-
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-dialog v-model="dialog" max-width="700px">
-
-        <v-btn slot="activator" color="primary" dark flat fab title="Novo Relatório"> {{ buttonTitle }}
-        </v-btn>
-
-        <v-card>
-          <v-card-title>
-            <span class="headline">{{ formTitle }}</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container grid-list-xl>
-              <v-layout wrap row>
-                <v-flex xs12>
-                  <v-text-field v-model="acessorio.descricao" label="Descrição"></v-text-field>
-                </v-flex>
-               <v-flex xs6>
-        <v-flex xs12 sm6 d-flex>
-        <v-select
-          :items="status"
-          label="Status"
-        ></v-select>
-      </v-flex>
-      </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-
-          <v-card-actions>
+    <div>
+        <v-toolbar flat>
+    
+            <v-toolbar-title>{{ title }}</v-toolbar-title>
+    
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" flat @click="initialize();">Cancelar</v-btn>
-            <v-btn color="blue darken-1" flat @click="save();">Salvar</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-toolbar>
-
-    <v-data-table :headers="headers" :items="acessorios" hide-actions class="elevation-1">
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-center">{{ props.item.descricao }}</td>
-        <td class="text-xs-center">{{ props.item.status }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
-          <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
-        </td>
-      </template>
-
-      <template slot="footer" v-if="records > 0">
-        <td colspan="100%">
-          <strong> {{ footerText }} {{ records }} </strong>
-        </td>
-      </template>
-
-      <template slot="no-data" v-else>
-        <strong> {{ emptyRecordsText }} </strong>
-      </template>
-    </v-data-table>
-  </div>
-
+    
+            <v-dialog v-model="dialog" max-width="700px">
+    
+                <v-btn slot="activator" color="primary" dark flat fab title="Pesquisar"> {{ buttonTitle }}
+                </v-btn>
+    
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                    </v-card-title>
+                </v-card>
+    
+    
+                <v-card-text>
+                    <v-container grid-list-xl>
+                        <v-layout wrap row>
+                            <v-flex xs12 sm6>
+                                <v-text-field label="Data inicial"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-text-field label="Data final"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-checkbox v-model="checkbox" label="Venda x Produto" required></v-checkbox>
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-checkbox v-model="checkbox" label="Venda x Produto" required></v-checkbox>
+    
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-checkbox v-model="checkbox" label="Venda x Produto" required></v-checkbox>
+    
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-checkbox v-model="checkbox" label="Venda x Produto" required></v-checkbox>
+    
+                            </v-flex>
+                            <v-flex xs12 sm6>
+                                <v-checkbox v-model="checkbox" label="Venda x Produto" required></v-checkbox>
+    
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card-text>
+    
+    
+    
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="geraRelatorio()">Gerar Relatorio</v-btn>
+                </v-card-actions>
+                </v-card>
+            </v-dialog>
+    
+            <v-dialog v-model="dialogRelatorio"></v-dialog>
+        </v-toolbar>
+    
+    
+    </div>
 </template>
 
 <script>
-  import AcessorioService from '../service/AcessorioService';
-
-  export default {
-    data: () => ({
-      title: "Relatórios",
-      buttonTitle: "Novo",
-      dialog: false,
-      footerText: "Total de registros: ",
-      emptyRecordsText: "Nenhum registro encontrado",
-      records: 0,
-      acessorios: [],
-      acessorio: {},
-     status: ['Ativo', 'Inativo'],
-      headers: [{
-          text: 'Descricao',
-          align: "center",
-          value: 'descricao'
+    import VueCharts from 'vue-chartjs'
+    import Bar from 'vue-chartjs'
+    import ClienteService from "../service/ClienteService";
+    import ProdutoService from "../service/ProdutoService";
+    import MarcaService from "../service/MarcaService";
+    
+    
+    export default {
+        data: () => ({
+            datacollection: null,
+            extends: Bar,
+            alert: false,
+            msgAlert: "",
+            title: "Relatorio",
+            buttonTitle: "Pesquisar",
+            dialog: false,
+            dialogRelatorio: false,
+            footerText: "Total de registros: ",
+            emptyRecordsText: "Nenhum registro encontrado",
+            records: 0,
+            clientes: [{
+                marca: {},
+                produto: []
+            }],
+            cliente: {},
+            tipoVeiculos: [],
+            tipoVeiculo: {
+    
+            },
+            marcas: [],
+            marca: {
+    
+            },
+            produtos: [],
+            produto: {},
+            headers: [{
+                    text: "Nome",
+                    align: "center",
+                    value: "name"
+                },
+                {
+                    text: "E-mail",
+                    align: "center",
+                    value: "email"
+                },
+                {
+                    text: "Telefone",
+                    align: "center",
+                    value: "telefone"
+                },
+                {
+                    text: "Rede Social",
+                    align: "center",
+                    value: "redeSocial"
+                },
+                {
+                    text: "Ações",
+                    value: "id",
+                    sortable: false
+                },
+                {}
+            ]
+        }),
+    
+        computed: {
+            formTitle() {
+                return this.cliente._id ? "" : "Pesquisar Relatorio";
+            }
         },
-        {
-          text: 'Status',
-          align: "center",
-          value: 'status'
+    
+        watch: {
+            dialog(val) {
+                val || this.initialize();
+            }
         },
-        { text: 'Ações', value: 'id', sortable: false },
-        {},
-      ],
-    }),
-
-    computed: {
-      formTitle() {
-        return this.acessorio._id ? 'Editar acessorio' : 'Novo acessorio'
-      }
-    },
-
-    watch: {
-      dialog(val) {
-        val || this.initialize();
-      }
-    },
-
-    created() {
-      this.initialize();
-    },
-
-    methods: {
-      calculateRecords() {
-        let amount = 0;
-        for (let i = 0; i < this.acessorios.length; i++) {
-          amount++;
+    
+        created() {
+            this.initialize();
+        },
+    
+        methods: {
+            calculateRecords() {
+                let amount = 0;
+                for (let i = 0; i < this.clientes.length; i++) {
+                    amount++;
+                }
+                this.records = amount;
+            },
+    
+            async initialize() {
+                this.marcas = await MarcaService.getAll();
+                this.produtos = await ProdutoService.getAll();
+                console.log(this.produtos)
+                this.clientes = await ClienteService.getAll();
+                console.log(this.clientes)
+                this.cliente = {};
+                this.dialog = false;
+                this.dialogRelatorio
+                this.calculateRecords();
+    
+    
+            },
+            async mounted() {
+                this.renderChart({
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [{
+                        label: 'GitHub Commits',
+                        backgroundColor: '#f87979',
+                        data: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11]
+                    }]
+                })
+            },
+    
+            edit(p) {
+                this.cliente = p;
+                this.dialog = true;
+            },
+    
+    
+            async geraRelatorio() {
+                console.log("relatorio")
+                this.datacollection = {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    datasets: [{
+                        label: 'Data One',
+                        backgroundColor: '#f87979',
+                        data: [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
+                    }]
+                }
+            },
+            getRandomInt() {
+                return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+            }
+    
+        },
+    
+        async clear() {
+            this.cliente = {};
         }
-        this.records = amount;
-      },
-
-      async initialize() {
-        this.acessorios = await AcessorioService.getAll();
-        this.acessorio = {};
-        this.dialog = false;
-        this.calculateRecords();
-      },
-
-      edit(p) {
-        this.acessorio = p;
-        this.dialog = true;
-      },
-
-      async remove(acessorio) {
-        if (confirm('Tem certeza que deseja excluir este registro ?')) await AcessorioService.remove(acessorio);
-        this.initialize();
-      },
-
-      async save() {
-        if (this.acessorio._id) {
-          await AcessorioService.update(this.acessorio);
-          this.initialize();
-        } else {
-          await AcessorioService.save(this.acessorio);
-          this.initialize();
-        }
-        this.initialize();
-        this.clear();
-      }, // save()
-
-      async clear(){
-          this.acessorio = {};
-      }
     }
-  }
-
 </script>
 
 <style>
-
+    
 </style>
