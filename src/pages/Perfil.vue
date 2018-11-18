@@ -179,18 +179,24 @@
             <v-layout wrap row>
   
   
-              <v-flex xs12>
-                <v-text-field v-model="atendimento.nome" label="Nome"></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field v-model="atendimento.telefone" label="Telefone"></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field v-model="atendimento.email" label="E-mail"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 d-flex>
-                <v-select xs12 :items="items" label="Status"></v-select>
-              </v-flex>
+              <v-flex xs12 sm6>
+                  <v-select :items="clientes" label="Selecione o Cliente" v-model="atendimento.cliente" item-text="nome" return-object></v-select>
+                </v-flex>
+                 <v-flex xs12 sm6>
+                  <v-select :items="produtos" label="Selecione o produto" v-model="atendimento.produto" item-text="nome" return-object></v-select>
+                </v-flex>
+                 <v-flex xs12 sm6>
+                  <v-select :items="perfis" label="Selecione o perfil" v-model="atendimento.perfil" item-text="cpf" return-object></v-select>
+                </v-flex>
+                <v-flex xs12 sm6>
+                  <v-select :items="vendedor" label="Selecione o vendedor" v-model="atendimento.vendedor" item-text="nomeVendedor" return-object></v-select>
+                </v-flex>
+                <v-flex xs12 sm6 d-flex>
+                  <v-select xs12 :items="items" label="Situação"></v-select>
+                </v-flex>
+                <v-flex xs12>
+                  <v-textarea solo name="input-7-4" label="Descrição" v-model="atendimento.descricao"></v-textarea>
+                </v-flex>
               <v-flex xs12>
                 <v-textarea solo name="input-7-4" label="Descrição" v-model="atendimento.descricao"></v-textarea>
               </v-flex>
@@ -256,6 +262,10 @@
         },
   
         atendimento: {
+           cliente:{},
+           produto:{},
+           prefil:{},
+           vendedor:{}
   
         }
   
@@ -357,6 +367,7 @@
       },
   
       async initialize() {
+        this.vendedores = await VendedorService.getAll();
   
         this.atendimentos = await AtendimentoService.getAll();
   
