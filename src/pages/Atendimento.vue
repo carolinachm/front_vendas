@@ -19,14 +19,14 @@
             <v-container grid-list-xl>
               <v-layout wrap row>
                                 
-                <v-flex xs12>
-                  <v-text-field v-model="atendimento.nome" label="Nome"></v-text-field>
+                <v-flex xs12 sm6>
+                  <v-select :items="clientes" label="Selecione o marca" v-model="atendimento.cliente" item-text="nome" return-object></v-select>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="atendimento.telefone" label="Telefone"></v-text-field>
+                 <v-flex xs12 sm6>
+                  <v-select :items="produtos" label="Selecione o marca" v-model="atendimento.produto" item-text="nome" return-object></v-select>
                 </v-flex>
-                <v-flex xs12>
-                  <v-text-field v-model="atendimento.email" label="E-mail"></v-text-field>
+                 <v-flex xs12 sm6>
+                  <v-select :items="perfis" label="Selecione o marca" v-model="atendimento.perfil" item-text="cpf" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6 d-flex>
                   <v-select xs12 :items="items" label="Situação"></v-select>
@@ -50,11 +50,7 @@
   
     <v-data-table :headers="headers" :items="atendimentos" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
-          <td class="text-xs-center">{{ props.item.dataAbertura }}</td>
-          <td class="text-xs-center">{{ props.item.dataEncerramento }}</td>
-          <td class="text-xs-center">{{ props.item.nome }}</td>
-           <td class="text-xs-center">{{ props.item.telefone }}</td>
-            <td class="text-xs-center">{{ props.item.email }}</td>
+          
              <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="justify-center layout px-0">
             
@@ -80,6 +76,9 @@
 
 <script>
   import AtendimentoService from '../service/AtendimentoService';
+  import ClienteService from '../service/ClienteService'
+  import ProdutoService from '../service/ProdutoService'
+  import PerfilService from '../service/PerfilService'
  
   
   
@@ -91,10 +90,20 @@
       footerText: "Total de registros: ",
       emptyRecordsText: "Nenhum registro encontrado",
       records: 0,
-      atendimentos: [],
+      atendimentos: [{
+        cliente:{},
+        produto: {},
+        perfil:{
+          vendedor:{}
+        }
+      }],
       atendimento: {},
-      usuarios: [],
-      usuario: {},
+      clientes:[],
+      cliente:{},
+      produtos:[],
+      produto:{},
+      perfis:[],
+      perfil:{},
       items: ['Ativo', 'Inativo'],
       date: null,
       menu: false,
@@ -165,7 +174,9 @@
       },
   
       async initialize() {
-    
+        this.clientes = await ClienteService.getAll();
+        this.produtos = await ProdutoService.getAll();
+        this.perfis = await PerfilService.getAll();
         this.atendimentos = await AtendimentoService.getAll();
         this.atendimento = {};
         this.dialog = false;

@@ -7,7 +7,7 @@
       <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="grey lighten-1" dark app fixed>
         <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
           <v-toolbar-side-icon @click.stop="drawer = !drawer" ></v-toolbar-side-icon>
-          <span class="hidden-sm-and-down text-xs-center" >{{ companyName }}</span>
+          <span class="hidden-sm-and-down" >{{ companyName }}</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
 

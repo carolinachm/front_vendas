@@ -5,10 +5,13 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import axios from 'axios' // we import axios from installed dependencies
 
 import store from './store'
 
 Vue.use(Vuetify)
+Vue.use(axios) // we register axios globally
+
 
 Vue.config.productionTip = false
 
