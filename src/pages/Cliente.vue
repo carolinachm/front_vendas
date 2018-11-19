@@ -51,7 +51,7 @@
                   <v-select :items="marcas" label="Selecione o marca" v-model="cliente.marca" item-text="descricao" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-select :items="produtos" label="Selecione as caracteristicas desejadas" v-model="cliente.produto" item-text="marca" return-object placeholder=""></v-select>
+                  <v-select :items="produtos" label="Selecione as caracteristicas desejadas"></v-select>
                 </v-flex>
   
                 <v-flex xs12 sm6>
@@ -79,7 +79,7 @@
      <td class="text-xs-center">{{ props.item.redeSocial }}</td>
     <td class="justify-center layout px-0">
       <v-icon small class="mr-2" @click="edit(props.item)" title="Editar registro">edit</v-icon>
-      <v-icon small @click="remove(props.item)" title="Excluir registro">delete</v-icon>
+      <v-icon small @click="clienteRemove = props.item" title="Excluir registro">delete</v-icon>
     </td>
 </template>
 
@@ -94,6 +94,33 @@
   <strong> {{ emptyRecordsText }} </strong>
 </template>
     </v-data-table>
+
+    <v-layout row justify-center>
+      <v-dialog persistent v-model="dialogRemove" max-width="500">
+        <v-card>
+          <v-toolbar color="white" class="elevation-3" card>
+            <v-toolbar-items>
+              <v-btn color="error" title="Cancelar" flat round icon>
+                <v-icon large>remove</v-icon>
+              </v-btn>
+            </v-toolbar-items>
+            <v-spacer></v-spacer>
+            <v-toolbar-title class="headline font-weight-light">Excluir Registro</v-toolbar-title>
+          </v-toolbar>
+
+          <v-card-text>
+            <span>Nome: {{ clienteRemove.nome }}</span>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-btn class="font-weight-light" color="success lighten-1" round block @click="remove();">
+              Sim
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+
    
   </div>
 
@@ -127,8 +154,11 @@
       marca: {
   
       },
-      produtos: ['marca','potencia'],
+      produtos: ['marca', 'potencia', 'desempenho', 'capaidade', 'tipoCor','placa', 'modelo'],
       produto: {},
+      clienteRemove:{},
+       dialogRemove: false,
+      confirmedExclusion: false,
       headers: [{
           text: "Nome",
           align: "center",
@@ -175,7 +205,7 @@
     },
   
     methods: {
-
+      itemTextProduto: produto=> cliente.produto.id + "-"+ cliente.produto.descricao,
       calculateRecords() {
         let amount = 0;
         for (let i = 0; i < this.clientes.length; i++) {
@@ -186,13 +216,14 @@
   
       async initialize() {
         this.marcas = await MarcaService.getAll();
-        this.produtos = await ProdutoService.getAll();
+        //this.produtos = await ProdutoService.getAll();
         console.log(this.produtos)
         this.clientes = await ClienteService.getAll();
         console.log(this.clientes)
         this.dialogRemove = false;
         this.cliente = {};
-        this.confirmedExclusion = false;
+         this.clienteRemove = {};
+          this.confirmedExclusion = false;
         this.dialog = false;
         this.calculateRecords();
   
@@ -202,18 +233,13 @@
         this.cliente = p;
         this.dialog = true;
       },
-      async remove(cliente) {
-        try {
-          await ClienteService.remove(cliente);
-          console.log(cliente);
-          this.msgAlert = "Excluído com sucesso";
-          this.initialize();
-        } catch (error) {
-          console.log("Erro a excluir" + error);
-        }
-  
-      },
-  
+    async remove() {
+        await ClienteService.remove(this.clienteRemove);
+        console.log(this.cliente)
+        this.initialize();
+      }
+,
+              
       async save() {
         if (this.cliente._id) {
           await ClienteService.update(this.cliente);

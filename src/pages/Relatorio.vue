@@ -1,23 +1,104 @@
 <template>
   <div class="container">
 
-    
+     <v-toolbar-title>{{ title }}</v-toolbar-title>
+  
+      <v-spacer></v-spacer>
 
     <v-form ref="form" v-model="valid" lazy-validation>
+      
+    <div>
+      <v-checkbox
+      v-model="checkbox"
+      label="Produto X Vendas"
+      required
+    ></v-checkbox>
+    </div>
+    
+    <v-checkbox
+      v-model="checkbox1"
+      label="Item mais pesquisados"
+      required
+    ></v-checkbox>
+    <v-checkbox
+      v-model="checkbox2"
+      label="Venda x Perfil"
+      required
+    ></v-checkbox>
 
-     <v-list-tile v-for="(job, index) in items" :key="job.title">
-    <v-list-tile-content>
-        <v-checkbox :value="job.title" 
-                    :key="job.title"
-                    :label="job.title"
-                    v-model="checkboxes[index].checked">
-        </v-checkbox>
-    </v-list-tile-content>
-</v-list-tile>
+     <v-radio-group v-model="row" row>
+      <v-radio label="Resumido" value="radio-1"></v-radio>
+      <v-radio label="Concluido" value="radio-2"></v-radio>
+    </v-radio-group>
+
+    <v-radio-group v-model="row" row>
+      <v-radio label="pdf" value="radio-1"></v-radio>
+      <v-radio label=".xls" value="radio-2"></v-radio>
+       <v-radio label=".txt" value="radio-2"></v-radio>
+
+        <v-btn color="blue darken-1" >Exportar</v-btn>
+    </v-radio-group>
+
    
-    <!-- <v-btn color="blue darken-1" flat @click.native.stop.prevent="abrirGerarRelatorio();">Gerar Relatório</v-btn> -->
     
   </v-form>
+
+   <v-layout row wrap>
+    <v-flex xs12 sm6 md4>
+      <v-menu
+        ref="menu"
+        :close-on-content-click="false"
+        v-model="menu"
+        :nudge-right="40"
+        :return-value.sync="date"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="date"
+          label="Data inicial"
+          prepend-icon="event"
+          readonly
+        ></v-text-field>
+        <v-date-picker v-model="date" no-title scrollable>
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-flex>
+    <v-spacer></v-spacer>
+    <v-flex xs12 sm6 md4>
+      <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="date"
+        persistent
+        lazy
+        full-width
+        width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="date"
+          label="Data final"
+          prepend-icon="event"
+          readonly
+        ></v-text-field>
+        <v-date-picker v-model="date" scrollable>
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+        </v-date-picker>
+      </v-dialog>
+    </v-flex>
+   
+    <v-spacer></v-spacer>
+  </v-layout>
 
    <div class="Chart">
       <h1 style="text-align:center;">Relatório</h1>
@@ -39,12 +120,21 @@
     },
     data () {
       return {
+         title: "Relatorio",
         dataPoints: null,
         height: 20,
-        checkboxes: [],
-    jobs:[],
+        checkbox: false,
+        checkbox1: false,
+        checkbox2: false,
         gerarRelatorio: false,
-         valid: true
+        radioGroup: 1,
+         valid: true,
+         date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
+      column: null,
+        row: null
       }
     },
     mounted () {
@@ -85,39 +175,8 @@
           height: `${this.height}px`,
           position: 'relative'
         }
-      },
-      items () {
-  this.checkboxes = this.jobs.map(job => {
-    return {
-      checked:false
+      }
     }
-  })
-    return this.jobs
-},
-jobs () {
-  return this.jobs
-}
-    },
-     created() {
-    this.$nextTick(() => {
-      this.jobs = [
-      {
-        ProdutoxVendas: {
-          title: "job 1"
-        }
-      },
-      {
-        L9cWVNxnQMfumDkUxp: {
-          title: "job 2"
-        }
-      },
-      {
-        L9cWVNxnQMfumDkxxp: {
-          title: "job 3"
-        }
-      }]
-    })
-  }
   }
 </script>
 

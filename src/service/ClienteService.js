@@ -43,5 +43,6 @@ export default class ClienteService {
     } catch (error) {
       throw error;
     }
-  } // remove()
+  }
+ // remove()
 } // class
