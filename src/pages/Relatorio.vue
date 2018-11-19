@@ -1,9 +1,30 @@
 <template>
   <div class="container">
-    <div class="Chart">
+
+    
+
+    <v-form ref="form" v-model="valid" lazy-validation>
+
+     <v-list-tile v-for="(job, index) in items" :key="job.title">
+    <v-list-tile-content>
+        <v-checkbox :value="job.title" 
+                    :key="job.title"
+                    :label="job.title"
+                    v-model="checkboxes[index].checked">
+        </v-checkbox>
+    </v-list-tile-content>
+</v-list-tile>
+   
+    <!-- <v-btn color="blue darken-1" flat @click.native.stop.prevent="abrirGerarRelatorio();">Gerar Relatório</v-btn> -->
+    
+  </v-form>
+
+   <div class="Chart">
       <h1 style="text-align:center;">Relatório</h1>
       <bar-example/>
     </div>
+    
+    
   </div>
 </template>
 
@@ -19,7 +40,11 @@
     data () {
       return {
         dataPoints: null,
-        height: 20
+        height: 20,
+        checkboxes: [],
+    jobs:[],
+        gerarRelatorio: false,
+         valid: true
       }
     },
     mounted () {
@@ -45,7 +70,14 @@
             }
           ]
         }
-      }
+      },
+       abrirGerarRelatorio() {
+  
+        console.log("Abrir dialog")
+  
+        this.gerarRelatorio = true;
+  
+      },
     },
     computed: {
       myStyles () {
@@ -53,8 +85,39 @@
           height: `${this.height}px`,
           position: 'relative'
         }
-      }
+      },
+      items () {
+  this.checkboxes = this.jobs.map(job => {
+    return {
+      checked:false
     }
+  })
+    return this.jobs
+},
+jobs () {
+  return this.jobs
+}
+    },
+     created() {
+    this.$nextTick(() => {
+      this.jobs = [
+      {
+        ProdutoxVendas: {
+          title: "job 1"
+        }
+      },
+      {
+        L9cWVNxnQMfumDkUxp: {
+          title: "job 2"
+        }
+      },
+      {
+        L9cWVNxnQMfumDkxxp: {
+          title: "job 3"
+        }
+      }]
+    })
+  }
   }
 </script>
 

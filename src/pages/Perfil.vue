@@ -183,10 +183,10 @@
                   <v-select :items="clientes" label="Selecione o Cliente" v-model="atendimento.cliente" item-text="nome" return-object></v-select>
                 </v-flex>
                  <v-flex xs12 sm6>
-                  <v-select :items="produtos" label="Selecione o produto" v-model="atendimento.produto" item-text="nome" return-object></v-select>
+                  <v-select :items="produtos" label="Selecione o produto" v-model="atendimento.produto" item-text="marca" return-object></v-select>
                 </v-flex>
                  <v-flex xs12 sm6>
-                  <v-select :items="perfis" label="Selecione o perfil" v-model="atendimento.perfil" item-text="cpf" return-object></v-select>
+                  <v-select :items="perfis" label="Selecione o perfil" v-model="atendimento.perfil" item-text="cliente" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-select :items="vendedor" label="Selecione o vendedor" v-model="atendimento.vendedor" item-text="nomeVendedor" return-object></v-select>
@@ -197,9 +197,7 @@
                 <v-flex xs12>
                   <v-textarea solo name="input-7-4" label="Descrição" v-model="atendimento.descricao"></v-textarea>
                 </v-flex>
-              <v-flex xs12>
-                <v-textarea solo name="input-7-4" label="Descrição" v-model="atendimento.descricao"></v-textarea>
-              </v-flex>
+              
             </v-layout>
           </v-container>
         </v-card-text>
@@ -367,8 +365,7 @@
       },
   
       async initialize() {
-        this.vendedores = await VendedorService.getAll();
-  
+        
         this.atendimentos = await AtendimentoService.getAll();
   
         this.produtos = await ProdutoService.getAll();
@@ -412,9 +409,7 @@
       },
   
       async findByCPF() {
-  
-  
-  
+     
         this.cliente = this.perfil.cliente;
   
         this.produto = this.perfil.produto;

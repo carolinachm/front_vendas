@@ -51,7 +51,7 @@
                   <v-select :items="marcas" label="Selecione o marca" v-model="cliente.marca" item-text="descricao" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6>
-                  <v-select :items="produtos" label="Selecione as caracteristicas desejadas" v-model="cliente.produto" :item-text="itemTextTipo" return-object placeholder=""></v-select>
+                  <v-select :items="produtos" label="Selecione as caracteristicas desejadas" v-model="cliente.produto" item-text="marca" return-object placeholder=""></v-select>
                 </v-flex>
   
                 <v-flex xs12 sm6>
@@ -175,7 +175,6 @@
     },
   
     methods: {
-      itemTextTipo: cliente => cliente.produto.marca + " - " + cliente.produto.marca,
 
       calculateRecords() {
         let amount = 0;

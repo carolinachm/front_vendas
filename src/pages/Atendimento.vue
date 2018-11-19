@@ -20,13 +20,13 @@
               <v-layout wrap row>
                                 
                 <v-flex xs12 sm6>
-                  <v-select :items="clientes" label="Selecione o marca" v-model="atendimento.cliente" item-text="nome" return-object></v-select>
+                  <v-select :items="clientes" label="Selecione o cliente" v-model="atendimento.cliente" item-text="nome" return-object></v-select>
                 </v-flex>
                  <v-flex xs12 sm6>
-                  <v-select :items="produtos" label="Selecione o marca" v-model="atendimento.produto" item-text="nome" return-object></v-select>
+                  <v-select :items="produtos" label="Selecione o produto" v-model="atendimento.produto" item-text="marca" return-object></v-select>
                 </v-flex>
                  <v-flex xs12 sm6>
-                  <v-select :items="perfis" label="Selecione o marca" v-model="atendimento.perfil" item-text="cpf" return-object></v-select>
+                  <v-select :items="vendedores" label="Selecione o Vendedor" v-model="nomeVendedor" item-text="nomeVendedor" return-object></v-select>
                 </v-flex>
                 <v-flex xs12 sm6 d-flex>
                   <v-select xs12 :items="items" label="Situação"></v-select>
@@ -50,7 +50,9 @@
   
     <v-data-table :headers="headers" :items="atendimentos" hide-actions class="elevation-1">
       <template slot="items" slot-scope="props">
-          
+            <td class="text-xs-center">{{ props.item.cliente }}</td>
+            <td class="text-xs-center">{{ props.item.produto }}</td>
+            <td class="text-xs-center">{{ props.item.vendedor }}</td>
              <td class="text-xs-center">{{ props.item.status }}</td>
           <td class="justify-center layout px-0">
             
@@ -78,7 +80,7 @@
   import AtendimentoService from '../service/AtendimentoService';
   import ClienteService from '../service/ClienteService'
   import ProdutoService from '../service/ProdutoService'
-  import PerfilService from '../service/PerfilService'
+ import VendedorService from '../service/VendedorService'
  
   
   
@@ -93,46 +95,35 @@
       atendimentos: [{
         cliente:{},
         produto: {},
-        perfil:{
-          vendedor:{}
-        }
+        vendedor:{}
       }],
       atendimento: {},
       clientes:[],
       cliente:{},
       produtos:[],
       produto:{},
-      perfis:[],
-      perfil:{},
+      vendedores:[],
+      vendedor:{},
+      nomeVendedor:"",
       items: ['Ativo', 'Inativo'],
       date: null,
       menu: false,
       modal: false,
       headers: [{
-          text: 'DataAbertura',
+          text: 'Cliente',
           align: "center",
-          value: 'dataAbertura'
+          value: 'cliente'
         },
         {
-          text: 'DataEncerramento',
+          text: 'Produto',
           align: "center",
-          value: 'dataEncerramento'
+          value: 'produto'
         },
        
         {
-          text: 'Nome',
+          text: 'Perfil',
           align: "center",
-          value: 'nome'
-        },
-        {
-          text: 'Telefone',
-          align: "center",
-          value: 'telefone'
-        },
-        {
-          text: 'E-mail',
-          align: "center",
-          value: 'email'
+          value: 'perfil'
         },
         {
           text: 'Status',
@@ -176,7 +167,7 @@
       async initialize() {
         this.clientes = await ClienteService.getAll();
         this.produtos = await ProdutoService.getAll();
-        this.perfis = await PerfilService.getAll();
+        this.vendedores = await VendedorService.getAll();
         this.atendimentos = await AtendimentoService.getAll();
         this.atendimento = {};
         this.dialog = false;
@@ -207,6 +198,10 @@
   
       async clear() {
         this.atendimento = {};
+      },
+      setarDados(){
+        this.nomeVendedor = this.atendimento.vendedor;
+        console.log = (this.nomeVendedor)
       }
     }
   }
